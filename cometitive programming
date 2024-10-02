@@ -1,0 +1,327 @@
+//ques1 1. Arrange words in a string in the order of their length.
+//Write a function that inputs a string. The function should return the string sorted in ascending order of the length of the words.
+
+//Example Test Case:
+//Input: "This is a cool sentence"
+//Output: "a is this cool sentence"
+
+
+#code in python
+def sort_words_by_length(input_str):
+    # Split the string into words
+    words = input_str.split()
+    
+    # Sort the words based on their length
+    words.sort(key=len)
+    
+    # Join the sorted words back into a single string
+    return ' '.join(words)
+
+if __name__ == "__main__":
+    input_str = input("Enter a sentence: ")		#Input:"This is a cool sentence"
+    print(sort_words_by_length(input_str))
+
+
+// code in java
+import java.util.*;
+
+public class WordLengthSorter {
+    public static String sortWordsByLength(String input) {
+        // Split the string into words
+        String[] words = input.split(" ");
+        
+        // Sort the array of words based on their length
+        Arrays.sort(words, Comparator.comparingInt(String::length));
+        
+        // Join the sorted words back into a single string
+        return String.join(" ", words);
+    }
+    
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter a sentence:");	//Input: "This is a cool sentence"
+        String input = scanner.nextLine();
+        
+        System.out.println(sortWordsByLength(input));
+        
+        scanner.close();
+    }
+}
+
+// ques 2 Remove duplicates from array
+//Write a function that inputs an array. This function should return an array that has the elements in the same order, but with each element appearing only once. Assume the input array is already sorted.
+
+//Example Test Case: 
+//Input: [2,3,4,4,6,7,7]
+//Output: [2,3,4,6,7]  
+
+# code in python
+def remove_duplicates(arr):
+    # Initialize the result list with the first element
+    result = []
+    
+    # Iterate through the array
+    for num in arr:
+        # Add to result if it's not already the last element in result
+        if not result or num != result[-1]:
+            result.append(num)
+    
+    return result
+
+if __name__ == "__main__":
+    arr = list(map(int, input("Enter sorted integers separated by spaces: ").split())) 		#Input: [2,3,4,4,6,7,7]
+    print(remove_duplicates(arr))
+
+
+// code in java
+import java.util.*;
+
+public class RemoveDuplicates {
+    public static int[] removeDuplicates(int[] arr) {
+        // Use a dynamic list to store unique elements
+        ArrayList<Integer> result = new ArrayList<>();
+        
+        // Iterate through the array
+        for (int num : arr) {
+            // Add to result if it's not already the last element in result
+            if (result.isEmpty() || num != result.get(result.size() - 1)) {
+                result.add(num);
+            }
+        }
+        
+        // Convert the list back to an array
+        int[] uniqueArray = new int[result.size()];
+        for (int i = 0; i < result.size(); i++) {
+            uniqueArray[i] = result.get(i);
+        }
+        
+        return uniqueArray;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter sorted integers separated by spaces:");
+        String input = scanner.nextLine();
+        String[] inputArr = input.split(" ");						//Input: [2,3,4,4,6,7,7]
+        int[] arr = Arrays.stream(inputArr).mapToInt(Integer::parseInt).toArray();
+        
+        int[] uniqueArr = removeDuplicates(arr);
+        System.out.println(Arrays.toString(uniqueArr));
+        
+        scanner.close();
+    }
+}
+
+
+//ques 3  Print the date based on the entered day and year
+//Write a function that inputs two integers: the day number and the year. This function should generate a string that has the entire date with the date, month and year mentioned. Ensure that the function also considers leap years.
+
+//Example Test Case:
+//Inputs:  256, 2021
+//Output: “13 September, 2021”
+
+# code in python
+from datetime import datetime, timedelta
+
+def day_of_year_to_date(day, year):
+    # Starting date of the given year
+    start_date = datetime(year, 1, 1)
+    
+    # Adding the day number to the starting date
+    date = start_date + timedelta(days=day-1)
+    
+    # Formatting the date in the desired format
+    return date.strftime("%d %B, %Y")
+
+if __name__ == "__main__":
+    day, year = map(int, input("Enter the day number and year separated by space: ").split())		#Inputs:  256, 2021
+    print(day_of_year_to_date(day, year))
+
+// code in java
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
+
+public class DayOfYearToDate {
+    public static String dayOfYearToDate(int day, int year) {
+        // Starting date of the given year
+        LocalDate startDate = LocalDate.of(year, 1, 1);
+        
+        // Adding the day number to the starting date
+        LocalDate date = startDate.plusDays(day - 1);
+        
+        // Formatting the date in the desired format
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM, yyyy");
+        return date.format(formatter);
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the day number and year separated by space:");		//Inputs:  256, 2021
+        
+        // Read the entire line and split the input
+        String input = scanner.nextLine();
+        String[] parts = input.split(" ");
+        
+        // Parse the day and year
+        int day = Integer.parseInt(parts[0]);
+        int year = Integer.parseInt(parts[1]);
+        
+        System.out.println(dayOfYearToDate(day, year));
+        
+        scanner.close();
+    }
+}
+
+
+//ques 4 The bottle shipping problem
+//A company manufactures packing cartons in four sizes: small, medium, large and xl. These cartons can hold 6 bottles, 12 bottles, 24 bottles and 48 bottles respectively.
+//Write a function that inputs the number of bottles to be shipped by the company. The function should print the break-up of the number of cartons used in descending order of capacity.
+
+//Example Test Case:
+//Input: 140
+//Output: 2 xl, 1 large, 1 medium, 1 small 
+
+#code in python
+def bottle_shipping(num_bottles):
+    carton_sizes = [48, 24, 12, 6]
+    carton_names = ['xl', 'large', 'medium', 'small']
+    result = []
+
+    for i in range(len(carton_sizes)):
+        count = num_bottles // carton_sizes[i]
+        if count > 0:
+            result.append(f"{count} {carton_names[i]}")
+        num_bottles %= carton_sizes[i]
+
+    return ", ".join(result)
+
+if __name__ == "__main__":
+    num_bottles = int(input("Enter the number of bottles to be shipped: "))		#Input: 140
+    print(bottle_shipping(num_bottles))
+
+
+// code in java
+import java.util.Scanner;
+
+public class BottleShipping {
+    public static String bottleShipping(int numBottles) {
+        int[] cartonSizes = {48, 24, 12, 6};
+        String[] cartonNames = {"xl", "large", "medium", "small"};
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < cartonSizes.length; i++) {
+            int count = numBottles / cartonSizes[i];
+            if (count > 0) {
+                result.append(count).append(" ").append(cartonNames[i]).append(", ");
+            }
+            numBottles %= cartonSizes[i];
+        }
+
+        // Remove the trailing comma and space
+        if (result.length() > 0) {
+            result.setLength(result.length() - 2);
+        }
+
+        return result.toString();
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the number of bottles to be shipped:");		//Input: 140
+        int numBottles = scanner.nextInt();
+        System.out.println(bottleShipping(numBottles));
+        scanner.close();
+    }
+}
+
+// ques 5 Design your own Stack
+//Design your own stack! The stack should have three functions: push(int), pop() and peek(). You are only allowed to use Arrays or Linked Lists.
+
+#code in python
+class Stack:
+    def __init__(self):
+        self.stack = []
+
+    def push(self, item):
+        self.stack.append(item)
+
+    def pop(self):
+        if not self.is_empty():
+            return self.stack.pop()
+        else:
+            raise IndexError("pop from empty stack")
+
+    def peek(self):
+        if not self.is_empty():
+            return self.stack[-1]
+        else:
+            raise IndexError("peek from empty stack")
+
+    def is_empty(self):
+        return len(self.stack) == 0
+
+# Example usage
+stack = Stack()
+stack.push(1)
+stack.push(2)
+print(stack.peek())  # Output: 2
+print(stack.pop())   # Output: 2
+print(stack.pop())   # Output: 1
+
+
+
+// code in java
+public class Stack {
+    private Node top;
+
+    private class Node {
+        int data;
+        Node next;
+
+        Node(int data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+
+    public Stack() {
+        top = null;
+    }
+
+    public void push(int item) {
+        Node newNode = new Node(item);
+        newNode.next = top;
+        top = newNode;
+    }
+
+    public int pop() {
+        if (isEmpty()) {
+            throw new RuntimeException("pop from empty stack");
+        }
+        int item = top.data;
+        top = top.next;
+        return item;
+    }
+
+    public int peek() {
+        if (isEmpty()) {
+            throw new RuntimeException("peek from empty stack");
+        }
+        return top.data;
+    }
+
+    public boolean isEmpty() {
+        return top == null;
+    }
+
+    // Example usage
+    public static void main(String[] args) {
+        Stack stack = new Stack();
+        stack.push(1);
+        stack.push(2);
+        System.out.println(stack.peek());  // Output: 2
+        System.out.println(stack.pop());   // Output: 2
+        System.out.println(stack.pop());   // Output: 1
+    }
+}
