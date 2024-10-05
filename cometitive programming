@@ -5,7 +5,6 @@ Example Test Case:Input: "This is a cool sentence"
 Output: "a is this cool sentence"
 '''
 
-
 #code in python
 def sort_words_by_length(input_str):
     # Split the string into words
